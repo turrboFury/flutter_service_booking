@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'pages/calendar_page.dart';
 import 'pages/statistics_page.dart';
 import 'pages/home_page.dart';
+import 'providers/appointment_provider.dart';
 
 void main() {
-  runApp(AutoServiceApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => AppointmentProvider()),
+      ],
+      child: AutoServiceApp(),
+    ),
+  );
 }
 
 class AutoServiceApp extends StatelessWidget {
