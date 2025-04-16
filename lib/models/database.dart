@@ -45,7 +45,8 @@ import 'package:flutter_service_booking/models/appoiment_history.dart';
 
 class Database {
   static final Database _instance = Database._internal();
-  List<AppointmentHistory> _database = new AppointmentHistory(vin: '2000')
+
+  final List<AppointmentHistory> _database = [];
 
   factory Database() {
     return _instance;
@@ -53,9 +54,17 @@ class Database {
 
   Database._internal();
 
-  bool find(String item) {
-    return _database.contains(item);
+  bool find(String vin) {
+    return _database.any((item) => item.vin == vin);
   }
- 
-  AppointmentHistory getCarHistory(String vin) => _database.where((item)=> item.);
+
+  AppointmentHistory? getCarHistory(String vin) {
+    return _database.firstWhere(
+          (item) => item.vin == vin,
+    );
+  }
+
+  void addHistory(AppointmentHistory history) {
+    _database.add(history);
+  }
 }

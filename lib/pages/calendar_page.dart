@@ -22,6 +22,17 @@ class _CalendarPageState extends State<CalendarPage> {
       _selectedDay = selectedDay;
     });
   }
+  TimeOfDay _parseTime(String timeStr) {
+    final parts = timeStr.split(":");
+    final hour = int.parse(parts[0]);
+    final minute = int.parse(parts[1]);
+    return TimeOfDay(hour: hour, minute: minute);
+  }
+  String _formatTime(TimeOfDay time) {
+    final hour = time.hour.toString().padLeft(2, '0');
+    final minute = time.minute.toString().padLeft(2, '0');
+    return "$hour:$minute";
+  }
 
   void _showCarFormDialog(BuildContext context) {
     showDialog(
@@ -33,6 +44,11 @@ class _CalendarPageState extends State<CalendarPage> {
               context,
               listen: false,
             );
+            print('carData: ${carData}');
+            final intervalParts = carData["Interval orar"]!.split(" - ");
+            final start = _parseTime(intervalParts[0]);
+            final end = _parseTime(intervalParts[1]);
+
             provider.addAppointment(
               Appointment(
                 car: Car(
@@ -44,7 +60,10 @@ class _CalendarPageState extends State<CalendarPage> {
                   vin: carData["VIN"]!,
                 ),
                 description: carData["Descriere"]!,
+
                 date: _selectedDay,
+                startTime: start,
+                endTime: end,
               ),
             );
           },
@@ -104,9 +123,16 @@ class _CalendarPageState extends State<CalendarPage> {
                               title: Text(
                                 "${appointment.car.licensePlate} - ${appointment.car.brandModel}",
                               ),
-                              subtitle: Text(
-                                "Kilometraj: ${appointment.car.mileage} km",
+                              subtitle:Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("Kilometraj: ${appointment.car.mileage} km"),
+                                  Text(
+                                    "Interval orar: ${_formatTime(appointment.startTime)} - ${_formatTime(appointment.endTime)}",
+                                  ),
+                                ],
                               ),
+
                               trailing: Icon(Icons.arrow_forward),
                               onTap: () {
                                 Navigator.push(

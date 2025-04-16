@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_service_booking/models/car.dart';
+import '../models/appoiment_history.dart';
 import '../models/appointment.dart';
 import 'package:provider/provider.dart';
 import '../providers/appointment_provider.dart';
@@ -7,7 +8,8 @@ import '../providers/appointment_provider.dart';
 class CarDetailsPage extends StatelessWidget {
   final Appointment appointment;
 
-  const CarDetailsPage({super.key, required this.appointment});
+
+  CarDetailsPage({super.key, required this.appointment});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +44,7 @@ class CarDetailsPage extends StatelessWidget {
             appointment.car.haveHistory()
                 ? Expanded(
                   child: ListView.builder(
-                    itemCount: appointment.car.history.length,
+                    itemCount: 2 ,
                     itemBuilder: (context, index) {
                       print("appointment: $appointment");
 
@@ -50,10 +52,10 @@ class CarDetailsPage extends StatelessWidget {
                       return Card(
                         child: ListTile(
                           title: Text(
-                            "${appointment.licensePlate} - ${appointment.brandModel}",
+                            "${appointment.car.licensePlate} - ${appointment.car.brandModel}",
                           ),
                           subtitle: Text(
-                            "Kilometraj: ${appointment.mileage} km",
+                            "Kilometraj: ${appointment.car.mileage} km",
                           ),
                           trailing: Icon(Icons.arrow_forward),
                           onTap: () {

@@ -19,7 +19,7 @@ class Car {
   });
 
   bool haveHistory() => Database().find(vin);
-  AppointmentHistory get getCarHistory {
+  AppointmentHistory? get getCarHistory {
     if (haveHistory()) {
       return Database().getCarHistory(vin);
     } else {
